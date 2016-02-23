@@ -49,8 +49,11 @@ var h = (function(){
   function el(selector, ancestor){
     var out;
     selector = selector.trim();
-    if(selector.substring(0,1) === "#") out = document.getElementById(selector);
-    else out = (ancestor || document).querySelectorAll(selector);
+    if(selector.substring(0,1) === "#"){
+      out = document.getElementById(selector.substring(1));
+    }else{
+      out = (ancestor || document).querySelectorAll(selector);
+    }
     return (out.length === 1 ? out[0] : out);
   }
   function forEach(input, callback){
