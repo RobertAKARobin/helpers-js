@@ -12,6 +12,7 @@ var h = (function(){
     is_browser: is_browser,
     has_html_children: has_html_children,
     is_html_collection: is_html_collection,
+    script_load: script_load,
     ajax: ajax
   }
   function ajax(options, callback){
@@ -72,6 +73,13 @@ var h = (function(){
   function is_html_collection(input){
     if(!is_browser) return false;
     else return (is_a(input, NodeList) || is_a(input, HTMLCollection));
+  }
+  function script_load(path){
+    var script = document.createElement("SCRIPT");
+    window.addEventListener("load", function(){
+      script.setAttribute("src", path);
+      document.head.appendChild(script);
+    });
   }
   function try_json(string){
     try{
