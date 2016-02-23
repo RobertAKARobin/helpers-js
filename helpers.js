@@ -1,5 +1,7 @@
 "use strict";
 
+//https://github.com/RobertAKARobin/helpers-js
+
 var h = (function(){
   var is_browser = (typeof NodeList !== "undefined");
   return {
