@@ -11,24 +11,21 @@ var h = (function(){
     has_html_children: has_html_children,
     is_html_collection: is_html_collection
   }
+  function collect(collection, callback){
+    var output = [];
+    if(!collection) return;
+    if(has_html_children(collection)) collection = collection.children;
+    forEach(collection, function(item){
+      output.push(callback(item));
+    });
+    return output;
+  }
   function el(selector, ancestor){
     var out;
     selector = selector.trim();
     if(selector.substring(0,1) === "#") out = document.getElementById(selector);
     else out = (ancestor || document).querySelectorAll(selector);
     return (out.length === 1 ? out[0] : out);
-  }
-  function is_a(input, prototype){
-    if(typeof prototype !== "undefined") return(input instanceof prototype);
-    else return false;
-  }
-  function has_html_children(input){
-    if(!is_browser) return false;
-    else return (is_a(input, HTMLElement));
-  }
-  function is_html_collection(input){
-    if(!is_browser) return false;
-    else return (is_a(input, NodeList) || is_a(input, HTMLCollection));
   }
   function forEach(input, callback){
     var i, l;
@@ -39,14 +36,17 @@ var h = (function(){
       for(i = 0; i < l; i++) callback(input[i], i);
     }else for(i in input){ callback(input[i], i); }
   }
-  function collect(collection, callback){
-    var output = [];
-    if(!collection) return;
-    if(has_html_children(collection)) collection = collection.children;
-    forEach(collection, function(item){
-      output.push(callback(item));
-    });
-    return output;
+  function has_html_children(input){
+    if(!is_browser) return false;
+    else return (is_a(input, HTMLElement));
+  }
+  function is_a(input, prototype){
+    if(typeof prototype !== "undefined") return(input instanceof prototype);
+    else return false;
+  }
+  function is_html_collection(input){
+    if(!is_browser) return false;
+    else return (is_a(input, NodeList) || is_a(input, HTMLCollection));
   }
 })();
 
