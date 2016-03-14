@@ -56,15 +56,22 @@ var h = (function(){
     }
     return (out.length === 1 ? out[0] : out);
   }
-  function forEach(input, callback){
-    var i, l, keys = null, key;
+  function forEach(input, callback, whenAsyncDone){
+    var i = 0, l, keys, key;
     if(typeof input == "number") input = new Array(input);
     else if(typeof input == "string") input = input.split("");
     if(!(input instanceof Array) && !is_html_collection(input)){
       keys = Object.keys(input);
     }
     l = (keys || input).length;
-    for(i = 0; i < l; i++){
+    if(whenAsyncDone){
+      function next(){
+        key = keys ? keys[i] : i;
+        if(i++ < l) callback(input[key], key, next);
+        else if(typeof whenAsyncDone == "function") whenAsyncDone();
+      }
+      next();
+    }else for(i; i < l; i++){
       key = keys ? keys[i] : i;
       callback(input[key], key);
     }
