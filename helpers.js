@@ -57,13 +57,17 @@ var h = (function(){
     return (out.length === 1 ? out[0] : out);
   }
   function forEach(input, callback){
-    var i, l;
+    var i, l, keys = null, key;
     if(typeof input == "number") input = new Array(input);
     else if(typeof input == "string") input = input.split("");
-    if((input instanceof Array) || is_html_collection(input)){
-      l = input.length;
-      for(i = 0; i < l; i++) callback(input[i], i);
-    }else for(i in input){ callback(input[i], i); }
+    if(!(input instanceof Array) && !is_html_collection(input)){
+      keys = Object.keys(input);
+    }
+    l = (keys || input).length;
+    for(i = 0; i < l; i++){
+      key = keys ? keys[i] : i;
+      callback(input[key], key);
+    }
   }
   function has_html_children(input){
     if(!is_browser) return false;
