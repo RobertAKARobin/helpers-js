@@ -17,10 +17,11 @@ var h = (function(){
   }
   function ajax(options, callback){
     var request = new XMLHttpRequest();
-    var url     = options.url;
+    var url     = (typeof options == "string") ? options : options.url;
     var method  = (options.method || "GET");
     var data    = (options.data ? objectToQuery(options.data) : "");
     var headers = (options.headers || {});
+    var type    = (options.type || "").toLowerCase();
     request.open(method, url, true);
     if(!headers["Content-Type"]){
       headers["Content-Type"] = "application/x-www-form-urlencoded";
@@ -31,8 +32,12 @@ var h = (function(){
     request.onreadystatechange = function(){
       var state     = request.readyState;
       var code      = request.status;
-      var response  = try_json(request.responseText);
-      if(state == 4 && code >= 200 && code < 400) callback(response, request);
+      var response  = request.responseText;
+      if(state == 4 && code >= 200 && code < 400){
+        if(type == "xml") response = new DOMParser().parseFromString(response, "application/xml");
+        else if(type != "text") try_json(response);
+        callback(response, request);
+      }
     }
     request.send(data);
     return request;
