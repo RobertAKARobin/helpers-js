@@ -13,7 +13,9 @@ var h = (function(){
     has_html_children,
     is_a,
     is_html_collection,
-    script_load
+    queryStringify,
+    script_load,
+    serializeForm
   ];
   forEach(publicMethods, function(method){
     publics[method.name] = method;
@@ -22,29 +24,22 @@ var h = (function(){
 
   function ajax(options, callback){
     var request = new XMLHttpRequest();
-    var url     = (typeof options == "string") ? options : options.url;
-    var method  = (options.method || "GET");
-    var data    = (options.data ? objectToQuery(options.data) : "");
-    var headers = (options.headers || {});
-    var type    = (options.type || "").toLowerCase();
+    var url     = ((typeof options == "string") ? options : options.url);
+    var method  = (options.method   || "GET").toUpperCase();
+    var typeIn  = (options.typeIn   || "json").toLowerCase();
+    var typeOut = (options.typeOut  || "json").toLowerCase();
+    var data    = (options.data     || "");
     request.open(method, url, true);
-    if(!headers["Content-Type"]){
-      headers["Content-Type"] = "application/x-www-form-urlencoded";
-    }
-    forEach(headers, function(value, key){
-      request.setRequestHeader(key, value);
-    });
+    request.setRequestHeader("Content-Type", "application/" + typeIn);
     request.onreadystatechange = function(){
-      var state     = request.readyState;
-      var code      = request.status;
+      var complete  = (request.readyState == 4);
+      var httpCode  = request.status;
       var response  = request.responseText;
-      if(state == 4 && code >= 200 && code < 400){
-        if(type == "xml") response = new DOMParser().parseFromString(response, "application/xml");
-        else if(type != "text") try_json(response);
-        callback(response, request);
+      if(complete && 200 <= httpCode && httpCode < 400){
+        callback((typeOut === "json" ? try_json(response) : response), request);
       }
     }
-    request.send(data);
+    request.send(typeIn === "json" ? JSON.stringify(data) : queryStringify(data));
     return request;
   }
   function collect(collection, callback){
@@ -98,12 +93,38 @@ var h = (function(){
     if(!publics.is_browser) return false;
     else return (is_a(input, NodeList) || is_a(input, HTMLCollection));
   }
+  function queryStringify(input){
+    var output = [];
+    forEach(input, function(param, key){
+      output.push([key, encodeURIComponent(param)].join("="));
+    });
+    return output.join("&");
+  }
   function script_load(path){
     var script = document.createElement("SCRIPT");
     window.addEventListener("load", function(){
       script.setAttribute("src", path);
       document.head.appendChild(script);
     });
+  }
+  function serializeForm(form, flatten){
+    var inputs  = h.el("input,textarea,option", form);
+    var data    = {};
+    h.forEach(inputs, function(el){
+      var isValid = true;
+      var name    = (el.name    || el.parentElement.name);
+      var type    = (el.type    || "").toUpperCase();
+      var tagName = (el.tagName || "").toUpperCase();
+      if(type == "RADIO" || type == "CHECKBOX" || tagName == "OPTION"){
+         if(!el.checked && !el.selected) isValid = false;
+      }
+      if(!data[name]) data[name] = [];
+      if(isValid) data[name].push(el.value);
+    });
+    if(flatten) forEach(data, function(value, key){
+      if(value instanceof Array && value.length == 1) data[key] = value[0];
+    });
+    return data;
   }
   function try_json(string){
     try{

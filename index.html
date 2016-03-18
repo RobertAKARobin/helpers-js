@@ -3,10 +3,45 @@
   <head>
     <title>Test</title>
     <script src="helpers.js"></script>
-    <script>h.script_load("script.js");</script>
-    <script>h.script_load("script2.js");</script>
+    <script>
+window.onload = function(){
+  h.el("button").addEventListener("click", send);
+  send();
+  function send(){
+    var form = h.el("#form");
+    var data = h.serializeForm(form, true);
+    h.ajax({
+      url: "http://localhost:4000/json",
+      data: data,
+      method: "POST"
+    }, function(response){
+      console.log(response)
+    });
+    console.log(JSON.stringify(data))
+  }
+}
+    </script>
   </head>
   <body>
-    <h1>Foo</h1>
+    <form id="form">
+      <input type="text" name="text" value="TEXT" />
+      <input type="hidden" name="hidden" value="HIDDEN" />
+      <input type="checkbox" name="checkbox" value="CHECKON1" checked />
+      <input type="checkbox" name="checkbox" value="CHECKON2" checked />
+      <input type="checkbox" name="checkbox" value="CHECKOFF" />
+      <input type="radio" name="radio" value="RADIOON" checked />
+      <input type="radio" name="radio" value="RADIOOFF" />
+      <textarea name="textarea">TEXTAREA</textarea>
+      <select name="select">
+        <option value="SELECTON" selected>SELECTON</option>
+        <option value="SELECTOFF">SELECTOFF</option>
+      </select>
+      <select name="multiselect" multiple>
+        <option value="MULTISELECTON1" selected>MULTISELECTON1</option>
+        <option value="MULTISELECTON2" selected>MULTISELECTON2</option>
+        <option value="MULTISELECTOFF">MULTISELECTOFF</option>
+      </select>
+      <button type="button">Submit</button>
+    </form>
   </body>
 </html>
