@@ -1,20 +1,25 @@
 "use strict";
 
-//https://github.com/RobertAKARobin/helpers-js
-
 var h = (function(){
-  var is_browser = (typeof NodeList !== "undefined");
-  return {
-    el: el,
-    forEach: forEach,
-    is_a: is_a,
-    collect: collect,
-    is_browser: is_browser,
-    has_html_children: has_html_children,
-    is_html_collection: is_html_collection,
-    script_load: script_load,
-    ajax: ajax
-  }
+  var publics = {
+    is_browser: (typeof NodeList !== "undefined"),
+    source    : "https://github.com/RobertAKARobin/helpers-js"
+  };
+  var publicMethods = [
+    ajax,
+    el,
+    collect,
+    forEach,
+    has_html_children,
+    is_a,
+    is_html_collection,
+    script_load
+  ];
+  forEach(publicMethods, function(method){
+    publics[method.name] = method;
+  });
+  return publics;
+
   function ajax(options, callback){
     var request = new XMLHttpRequest();
     var url     = (typeof options == "string") ? options : options.url;
@@ -82,7 +87,7 @@ var h = (function(){
     }
   }
   function has_html_children(input){
-    if(!is_browser) return false;
+    if(!publics.is_browser) return false;
     else return (is_a(input, HTMLElement));
   }
   function is_a(input, prototype){
@@ -90,7 +95,7 @@ var h = (function(){
     else return false;
   }
   function is_html_collection(input){
-    if(!is_browser) return false;
+    if(!publics.is_browser) return false;
     else return (is_a(input, NodeList) || is_a(input, HTMLCollection));
   }
   function script_load(path){
