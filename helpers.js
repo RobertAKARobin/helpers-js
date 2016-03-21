@@ -9,6 +9,7 @@ var h = (function(){
     ajax,
     el,
     collect,
+    extend,
     forEach,
     has_html_children,
     is_a,
@@ -60,6 +61,11 @@ var h = (function(){
       out = (ancestor || document).querySelectorAll(selector);
     }
     return (out.length === 1 ? out[0] : out);
+  }
+  function extend(target, input){
+    forEach(input, function(value, key){
+      target[key] = value;
+    });
   }
   function forEach(input, callback, whenAsyncDone){
     var i = 0, l, keys, key;
