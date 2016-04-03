@@ -10,16 +10,16 @@ var h = (function(){
     collect,
     el,
     extend,
-    forEach,
+    for_each,
     has_html_children,
     is_a,
     is_html_collection,
-    queryStringify,
+    query_stringify,
     script_load,
-    serializeForm,
+    serialize_form,
     try_json
   ];
-  forEach(publicMethods, function(method){
+  for_each(publicMethods, function(method){
     publics[method.name] = method;
   });
   return publics;
@@ -41,14 +41,14 @@ var h = (function(){
         callback((typeOut === "json" ? try_json(response) : response), request);
       }
     }
-    request.send(typeIn === "json" ? JSON.stringify(data) : queryStringify(data));
+    request.send(typeIn === "json" ? JSON.stringify(data) : query_stringify(data));
     return request;
   }
   function collect(collection, callback){
     var output = [];
     if(!collection) return;
     if(has_html_children(collection)) collection = collection.children;
-    forEach(collection, function(item){
+    for_each(collection, function(item){
       output.push(callback(item));
     });
     return output;
@@ -64,11 +64,11 @@ var h = (function(){
     return (out.length === 1 ? out[0] : out);
   }
   function extend(target, input){
-    forEach(input, function(value, key){
+    for_each(input, function(value, key){
       target[key] = value;
     });
   }
-  function forEach(input, callback, whenAsyncDone){
+  function for_each(input, callback, whenAsyncDone){
     var i = 0, l, keys, key;
     if(typeof input == "number") input = new Array(input);
     else if(typeof input == "string") input = input.split("");
@@ -100,9 +100,9 @@ var h = (function(){
     if(!publics.is_browser) return false;
     else return (is_a(input, NodeList) || is_a(input, HTMLCollection));
   }
-  function queryStringify(input){
+  function query_stringify(input){
     var output = [];
-    forEach(input, function(param, key){
+    for_each(input, function(param, key){
       output.push([key, encodeURIComponent(param)].join("="));
     });
     return output.join("&");
@@ -114,10 +114,10 @@ var h = (function(){
       document.head.appendChild(script);
     });
   }
-  function serializeForm(form, flatten){
+  function serialize_form(form, flatten){
     var inputs  = h.el("input,textarea,option", form);
     var data    = {};
-    h.forEach(inputs, function(el){
+    h.for_each(inputs, function(el){
       var isValid = true;
       var name    = (el.name    || el.parentElement.name);
       var type    = (el.type    || "").toUpperCase();
@@ -128,7 +128,7 @@ var h = (function(){
       if(!data[name]) data[name] = [];
       if(isValid) data[name].push(el.value);
     });
-    if(flatten) forEach(data, function(value, key){
+    if(flatten) for_each(data, function(value, key){
       if(value instanceof Array && value.length == 1) data[key] = value[0];
     });
     return data;

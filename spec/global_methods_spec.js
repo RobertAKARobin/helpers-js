@@ -39,10 +39,10 @@ describe("Helpers", function(){
     });
   });
 
-  describe("#forEach", function(){
+  describe("#for_each", function(){
     it("when passed a number, iterates N times", function(){
       var output = "";
-      h.forEach(3, function(){
+      h.for_each(3, function(){
         output += "a";
       });
       expect(output).toEqual("aaa");
@@ -50,7 +50,7 @@ describe("Helpers", function(){
     it("when passed an array, iterates over each item in the array", function(){
       var output = "";
       var input = ["a", "b", "c"];
-      h.forEach(input, function(item){
+      h.for_each(input, function(item){
         output += item;
       });
       expect(output).toEqual("abc");
@@ -62,7 +62,7 @@ describe("Helpers", function(){
         age: 12,
         gender: "female"
       };
-      h.forEach(input, function(value, key){
+      h.for_each(input, function(value, key){
         output += key + ": " + value + ", "
       });
       expect(output).toEqual("name: Alice, age: 12, gender: female, ");
@@ -90,7 +90,7 @@ describe("Helpers", function(){
         gender: "female",
         location: "in Wonderland"
       };
-      var output = h.queryStringify(input);
+      var output = h.query_stringify(input);
       expect(output).toBe("name=Alice&age=12&gender=female&location=in%20Wonderland");
     });
   });
