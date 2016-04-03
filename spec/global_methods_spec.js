@@ -95,6 +95,16 @@ describe("Helpers", function(){
     });
   });
 
+  describe("#select", function(){
+    it("returns an array of items for which the callback was true", function(){
+      var input = ("Atti is one cute cat").split(" ");
+      var output = h.select(input, function(item){
+        if(item.length === 4) return true;
+      });
+      expect(output.join(" ")).toBe("Atti cute");
+    });
+  });
+
   describe("#try_json", function(){
     it("does not throw an error when passed invalid JSON", function(){
       var input = "This is not JSON";

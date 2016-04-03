@@ -16,6 +16,7 @@ var h = (function(){
     is_html_collection,
     query_stringify,
     script_load,
+    select,
     serialize_form,
     try_json
   ];
@@ -113,6 +114,13 @@ var h = (function(){
       script.setAttribute("src", path);
       document.head.appendChild(script);
     });
+  }
+  function select(input, callback){
+    var output = [];
+    for_each(input, function(item){
+      if(callback(item)) output.push(item);
+    });
+    return output;
   }
   function serialize_form(form, flatten){
     var inputs  = h.el("input,textarea,option", form);
