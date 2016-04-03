@@ -7,8 +7,8 @@ var h = (function(){
   };
   var publicMethods = [
     ajax,
-    el,
     collect,
+    el,
     extend,
     forEach,
     has_html_children,
@@ -16,7 +16,8 @@ var h = (function(){
     is_html_collection,
     queryStringify,
     script_load,
-    serializeForm
+    serializeForm,
+    try_json
   ];
   forEach(publicMethods, function(method){
     publics[method.name] = method;
