@@ -7,6 +7,13 @@ describe("Helpers", function(){
     });
   });
 
+  describe("#capitalize", function(){
+    it("returns a capitalized string", function(){
+      var input = "alice";
+      expect(h.capitalize(input)).toBe("Alice");
+    });
+  });
+
   describe("#collect", function(){
     it("returns an array of subproperties", function(){
       var input = [

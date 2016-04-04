@@ -7,6 +7,7 @@ var h = (function(){
   };
   var publicMethods = [
     ajax,
+    capitalize,
     collect,
     el,
     extend,
@@ -44,6 +45,9 @@ var h = (function(){
     }
     request.send(typeIn === "json" ? JSON.stringify(data) : query_stringify(data));
     return request;
+  }
+  function capitalize(string){
+     return string.substring(0,1).toUpperCase() + string.substring(1);
   }
   function collect(collection, callback){
     var output = [];
