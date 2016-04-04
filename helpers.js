@@ -112,11 +112,14 @@ var h = (function(){
     });
     return output.join("&");
   }
-  function load_static(input){
+  function load_static(input, onProgress){
+    var total;
     if(!is_a(input, Array)) input = [input];
-    for_each(input, function(path){
+    total = input.length;
+    for_each(input, function(path, index){
       if(path.indexOf(".js") > -1) script_load(path);
       else if(path.indexOf(".css") > -1) style_load(path);
+      if(onProgress) onProgress(total, index + 1);
     });
   }
   function select(input, callback){
@@ -152,7 +155,7 @@ var h = (function(){
     return string;
   }
 
-  function style_load_one(path){
+  function style_load(path){
     var link = document.createElement("LINK");
     link.setAttribute("rel", "stylesheet");
     window.addEventListener("load", function(){
@@ -160,7 +163,7 @@ var h = (function(){
       document.head.appendChild(link);
     });
   }
-  function script_load_one(path){
+  function script_load(path){
     var script = document.createElement("SCRIPT");
     window.addEventListener("load", function(){
       script.setAttribute("src", path);
