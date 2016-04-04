@@ -19,6 +19,7 @@ var h = (function(){
     script_load,
     select,
     serialize_form,
+    style_load,
     try_json
   ];
   for_each(publicMethods, function(method){
@@ -144,6 +145,14 @@ var h = (function(){
       if(value instanceof Array && value.length == 1) data[key] = value[0];
     });
     return data;
+  }
+  function style_load(path){
+    var link = document.createElement("LINK");
+    link.setAttribute("rel", "stylesheet");
+    window.addEventListener("load", function(){
+      link.setAttribute("href", path);
+      document.head.appendChild(link);
+    });
   }
   function try_json(string){
     try{
