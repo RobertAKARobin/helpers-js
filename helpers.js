@@ -15,11 +15,10 @@ var h = (function(){
     has_html_children,
     is_a,
     is_html_collection,
+    load_static,
     query_stringify,
-    script_load,
     select,
     serialize_form,
-    style_load,
     try_json
   ];
   for_each(publicMethods, function(method){
@@ -113,11 +112,11 @@ var h = (function(){
     });
     return output.join("&");
   }
-  function script_load(path){
-    var script = document.createElement("SCRIPT");
-    window.addEventListener("load", function(){
-      script.setAttribute("src", path);
-      document.head.appendChild(script);
+  function load_static(input){
+    if(!is_a(input, Array)) input = [input];
+    for_each(input, function(path){
+      if(path.indexOf(".js") > -1) script_load(path);
+      else if(path.indexOf(".css") > -1) style_load(path);
     });
   }
   function select(input, callback){
@@ -146,7 +145,14 @@ var h = (function(){
     });
     return data;
   }
-  function style_load(path){
+  function try_json(string){
+    try{
+      string = JSON.parse(string);
+    }catch(err){}
+    return string;
+  }
+
+  function style_load_one(path){
     var link = document.createElement("LINK");
     link.setAttribute("rel", "stylesheet");
     window.addEventListener("load", function(){
@@ -154,11 +160,12 @@ var h = (function(){
       document.head.appendChild(link);
     });
   }
-  function try_json(string){
-    try{
-      string = JSON.parse(string);
-    }catch(err){}
-    return string;
+  function script_load_one(path){
+    var script = document.createElement("SCRIPT");
+    window.addEventListener("load", function(){
+      script.setAttribute("src", path);
+      document.head.appendChild(script);
+    });
   }
 })();
 
