@@ -13,6 +13,53 @@ describe("Helpers", function(){
       expect(h.capitalize(input)).toBe("Alice");
     });
   });
+  
+  describe("#chain", function(){
+    it("runs functions in order", function(done){
+      var output = "";
+      h.chain([
+        function(next){
+          setTimeout(function(){
+            output += "a";
+            next();
+          }, 10);
+        },
+        function(next){
+          setTimeout(function(){
+            output += "b";
+            next();
+          }, 10);
+        },
+        function(){
+          output += "c";
+          expect(output).toBe("abc");
+          done();
+        }
+      ]);
+    });
+    it("lets data be passed down the chain", function(done){
+      var output = "";
+      h.chain([
+        function(next){
+          setTimeout(function(){
+            next("a");
+          }, 10);
+        },
+        function(next, args){
+          output += args[0];
+          setTimeout(function(){
+            output += "b";
+            next("c");
+          }, 10);
+        },
+        function(next, args){
+          output += args[0];
+          expect(output).toBe("abc");
+          done();
+        }
+      ]);
+    });
+  });
 
   describe("#collect", function(){
     it("returns an array of subproperties", function(){

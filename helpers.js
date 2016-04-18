@@ -8,6 +8,7 @@ var h = (function(){
   var publicMethods = [
     ajax,
     capitalize,
+    chain,
     collect,
     el,
     extend,
@@ -34,6 +35,9 @@ var h = (function(){
     var typeOut = (options.typeOut  || "json").toLowerCase();
     var data    = (options.data     || "");
     request.open(method, url, true);
+    for_each(options.headers, function(header, value){
+      request.setRequestHeader(header, value);
+    });
     request.setRequestHeader("Content-Type", "application/" + typeIn);
     request.onreadystatechange = function(){
       var complete  = (request.readyState == 4);
@@ -48,6 +52,15 @@ var h = (function(){
   }
   function capitalize(string){
      return string.substring(0,1).toUpperCase() + string.substring(1);
+  }
+  function chain(events){
+    var index = -1;
+    function next(){
+      index += 1;
+      var event = events[index];
+      if(event) event(next, arguments);
+    }
+    next();
   }
   function collect(collection, callback){
     var output = [];
@@ -75,6 +88,7 @@ var h = (function(){
   }
   function for_each(input, callback, whenAsyncDone){
     var i = 0, l, keys, key;
+    if(typeof input == "undefined") return false;
     if(typeof input == "number") input = new Array(input);
     else if(typeof input == "string") input = input.split("");
     if(!(input instanceof Array) && !is_html_collection(input)){

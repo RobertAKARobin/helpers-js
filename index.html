@@ -5,20 +5,40 @@
     <script src="helpers.js"></script>
     <script>
 window.onload = function(){
-  h.el("button").addEventListener("click", send);
-  send();
-  function send(){
-    var form = h.el("#form");
-    var data = h.serializeForm(form, true);
-    h.ajax({
-      url: "http://localhost:4000/json",
-      data: data,
-      method: "POST"
-    }, function(response){
-      console.log(response)
-    });
-    console.log(JSON.stringify(data))
-  }
+  h.chain([
+    function(next){
+      h.ajax({
+        url:    "http://localhost/Users/robertthomas/Programming/web/test.php",
+        method: "POST",
+        typeIn: "x-www-form-urlencoded",
+        data: {
+          input: "hello1"
+        }
+      }, next);
+    },
+    function(next, data){
+      console.log(data[0].POST.input)
+      h.ajax({
+        url:    "http://localhost/Users/robertthomas/Programming/web/test.php",
+        method: "POST",
+        typeIn: "x-www-form-urlencoded",
+        data: {
+          input: "hello2"
+        }
+      }, next);
+    },
+    function(next, data){
+      console.log(data[0].POST.input)
+      setTimeout(next, 1000);
+    },
+    function(next){
+      console.log("woooo");
+      next("hello");
+    },
+    function(next, prev){
+      console.log(prev[0]);
+    }
+  ]);
 }
     </script>
   </head>
