@@ -173,5 +173,23 @@ describe("Helpers", function(){
       var output = h.try_json(input);
       expect(output.name).toBe("Alice");
     });
+    it("parses 'relaxed' JSON strings", function(){
+      var string = "\
+      {\
+        one: 1,\
+        'foo': \"foo\",\
+        \"bar\": \"bar\",\
+        true: true,\
+        array: [\
+          \"alice\"\
+        ]\
+      }";
+      var object = h.try_json(string);
+      expect(object.one).toBe(1);
+      expect(object.foo).toBe("foo");
+      expect(object.bar).toBe("bar");
+      expect(object.array).toContain("alice");
+      expect(object.true).toBe(true);
+    });
   });
 });

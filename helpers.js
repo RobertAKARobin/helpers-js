@@ -163,9 +163,15 @@ var h = (function(){
     return data;
   }
   function try_json(string){
+    string = string.trim();
     try{
       string = JSON.parse(string);
-    }catch(err){}
+    }catch(err){
+      try{
+        string = string.replace(/\s+[\"\']?([^\n\r:,]+?)[\"\']?:/g, '"$1":');
+        string = JSON.parse(string);
+      }catch(err){}
+    }
     return string;
   }
 
