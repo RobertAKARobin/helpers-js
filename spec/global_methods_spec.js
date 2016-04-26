@@ -121,6 +121,14 @@ describe("Helpers", function(){
       });
       expect(output).toEqual("name: Alice, age: 12, gender: female, ");
     });
+    it("is halted when a loop returns 'break'", function(){
+      var output = 0;
+      h.for_each(10, function(){
+        if(output >= 5) return "break";
+        output += 1;
+      });
+      expect(output).toEqual(5);
+    });
   });
 
   describe("#is_a", function(){

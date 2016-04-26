@@ -98,13 +98,14 @@ var h = (function(){
     if(whenAsyncDone){
       function next(){
         key = keys ? keys[i] : i;
-        if(i++ < l) callback(input[key], key, next);
-        else if(typeof whenAsyncDone == "function") whenAsyncDone();
+        if(i++ < l){
+          if(callback(input[key], key, next) === "break") return "break";
+        }else if(typeof whenAsyncDone == "function") whenAsyncDone();
       }
       next();
     }else for(i; i < l; i++){
       key = keys ? keys[i] : i;
-      callback(input[key], key);
+      if(callback(input[key], key) === "break") return "break";
     }
   }
   function has_html_children(input){
