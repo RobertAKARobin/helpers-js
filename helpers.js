@@ -66,8 +66,8 @@ var h = (function(){
     var output = [];
     if(!collection) return;
     if(has_html_children(collection)) collection = collection.children;
-    for_each(collection, function(item){
-      output.push(callback(item));
+    for_each(collection, function(){
+      output.push(callback.apply(window, arguments));
     });
     return output;
   }
