@@ -67,7 +67,7 @@ var h = (function(){
     if(!collection) return;
     if(has_html_children(collection)) collection = collection.children;
     for_each(collection, function(){
-      output.push(callback.apply(window, arguments));
+      output.push(callback.apply(null, arguments));
     });
     return output;
   }
@@ -96,16 +96,16 @@ var h = (function(){
     }
     l = (keys || input).length;
     if(whenAsyncDone){
-      function next(){
-        key = keys ? keys[i] : i;
-        if(i++ < l){
-          if(callback(input[key], key, next) === "break") return "break";
-        }else if(typeof whenAsyncDone == "function") whenAsyncDone();
-      }
       next();
     }else for(i; i < l; i++){
       key = keys ? keys[i] : i;
       if(callback(input[key], key) === "break") return "break";
+    }
+    function next(){
+      key = keys ? keys[i] : i;
+      if(i++ < l){
+        if(callback(input[key], key, next) === "break") return "break";
+      }else if(typeof whenAsyncDone == "function") whenAsyncDone();
     }
   }
   function has_html_children(input){
