@@ -20,6 +20,7 @@ var h = (function(){
     query_stringify,
     select,
     serialize_form,
+    tag,
     try_json
   ];
   for_each(publicMethods, function(method){
@@ -162,6 +163,11 @@ var h = (function(){
       if(value instanceof Array && value.length == 1) data[key] = value[0];
     });
     return data;
+  }
+  function tag(){
+    var tag     = (this && this !== h) ? this : arguments[0];
+    var content = arguments[1];
+    return "<" + tag + ">" + content + "</" + tag + ">";
   }
   function try_json(string){
     string = string.trim();

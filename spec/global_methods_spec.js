@@ -166,6 +166,17 @@ describe("Helpers", function(){
       expect(output.join(" ")).toBe("Atti cute");
     });
   });
+  
+  describe("#tag", function(){
+    it("returns an HTML tag", function(){
+      var output  = h.tag("span", "Test");
+      expect(output).toBe("<span>Test</span>");
+    });
+    it("works with replace's capturing groups and bind", function(){
+      var output  = ("Test").replace(/^(.*)$/g, h.tag.bind("span"));
+      expect(output).toBe("<span>Test</span>");
+    });
+  });
 
   describe("#try_json", function(){
     it("does not throw an error when passed invalid JSON", function(){
