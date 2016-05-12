@@ -5,6 +5,11 @@ var h = (function(){
     is_browser: (typeof NodeList !== "undefined"),
     source    : "https://github.com/RobertAKARobin/helpers-js"
   };
+  var HTMLentities = [
+    ["\\&",   "&amp;"],
+    ["\\<",   "&lt;"],
+    ["\\>",   "&gt;"]
+  ]
   var publicMethods = [
     ajax,
     capitalize,
@@ -18,6 +23,7 @@ var h = (function(){
     is_html_collection,
     load_static,
     query_stringify,
+    replaceEntities,
     select,
     serialize_form,
     tag,
@@ -137,6 +143,12 @@ var h = (function(){
       else if(path.indexOf(".css") > -1) style_load(path);
       if(onProgress) onProgress(total, index + 1);
     });
+  }
+  function replaceEntities(output){
+    h.for_each(HTMLentities, function(matcher){
+      output = output.replace(RegExp(matcher[0], "g"), matcher[1]);
+    });
+    return output;
   }
   function select(input, callback){
     var output = [];

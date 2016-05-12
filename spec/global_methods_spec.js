@@ -157,6 +157,13 @@ describe("Helpers", function(){
     });
   });
 
+  describe("#replaceEntities", function(){
+    it("replaces special characters with HTML entities", function(){
+      var output = h.replaceEntities("<span>Alice & Bob</span>");
+      expect(output).toBe("&lt;span&gt;Alice &amp; Bob&lt;/span&gt;");
+    });
+  });
+
   describe("#select", function(){
     it("returns an array of items for which the callback was true", function(){
       var input = ("Atti is one cute cat").split(" ");
