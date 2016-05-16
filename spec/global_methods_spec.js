@@ -109,7 +109,7 @@ describe("Helpers", function(){
       });
       expect(output).toEqual("abc");
     });
-    it("when pass an object, iterates over each property", function(){
+    it("when passed an object, iterates over each property", function(){
       var output = "";
       var input = {
         name: "Alice",
@@ -117,7 +117,7 @@ describe("Helpers", function(){
         gender: "female"
       };
       h.for_each(input, function(value, key){
-        output += key + ": " + value + ", "
+        output += key + ": " + value + ", ";
       });
       expect(output).toEqual("name: Alice, age: 12, gender: female, ");
     });

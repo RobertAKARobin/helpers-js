@@ -100,6 +100,10 @@ var h = (function(){
     else if(typeof input == "string") input = input.split("");
     if(!(input instanceof Array) && !is_html_collection(input)){
       keys = Object.keys(input);
+      if(keys.length === 0){
+        input = [input];
+        keys  = [0];
+      }
     }
     l = (keys || input).length;
     if(whenAsyncDone){
