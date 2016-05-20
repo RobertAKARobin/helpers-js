@@ -22,6 +22,7 @@ var h = (function(){
     is_a,
     is_html_collection,
     load_static,
+    pad,
     query_stringify,
     replaceEntities,
     select,
@@ -151,6 +152,11 @@ var h = (function(){
       else if(path.indexOf(".css") > -1) style_load(path);
       if(onProgress) onProgress(total, index + 1);
     });
+  }
+  function pad(input, width, char, fromRight){
+    var padding = new Array(Math.max(width - input.length + 1)).join(char);
+    if(fromRight) return padding + input;
+    else return input + padding;
   }
   function replaceEntities(output){
     h.for_each(HTMLentities, function(matcher){

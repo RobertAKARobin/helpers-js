@@ -143,6 +143,15 @@ describe("Helpers", function(){
       expect(h.is_a(new c(), Array)).toBe(true);
     });
   });
+  
+  describe("#pad", function(){
+    it("adds characters to the end of a string", function(){
+      expect(h.pad("foo", 5, "-")).toBe("foo--");
+    });
+    it("can add characters to the beginning of a string", function(){
+      expect(h.pad("foo", 5, "-", true)).toBe("--foo");
+    });
+  });
 
   describe("#queryStringify", function(){
     it("converts an object to a querystring", function(){
