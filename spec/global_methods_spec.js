@@ -199,6 +199,9 @@ describe("Helpers", function(){
       var output  = ("Test").replace(/^(.*)$/g, h.tag.bind("span"));
       expect(output).toBe("<span>Test</span>");
     });
+    it("can add attributes", function(){
+      expect(h.tag(["p", "test='yes'"], "test")).toBe("<p test='yes'>test</p>")
+    });
   });
 
   describe("#try_json", function(){

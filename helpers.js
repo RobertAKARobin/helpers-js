@@ -195,7 +195,12 @@ var h = (function(){
   function tag(){
     var tag     = (this && this !== h) ? this : arguments[0];
     var content = arguments[1];
-    return "<" + tag + ">" + content + "</" + tag + ">";
+    var attrs;
+    if(h.is_a(tag, Array)){
+      attrs     = tag[1];
+      tag       = tag[0];
+    }
+    return "<" + tag + (attrs ? " " + attrs : "") + ">" + content + "</" + tag + ">";
   }
   function try_json(string){
     string = string.trim();
