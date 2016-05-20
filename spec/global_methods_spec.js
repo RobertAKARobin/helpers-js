@@ -158,6 +158,9 @@ describe("Helpers", function(){
     it("can add characters to the beginning of a string", function(){
       expect(h.pad("foo", 5, "-", true)).toBe("--foo");
     });
+    it("has a default padding character of space", function(){
+      expect(h.pad("foo", 5)).toBe("foo  ");
+    });
   });
 
   describe("#queryStringify", function(){

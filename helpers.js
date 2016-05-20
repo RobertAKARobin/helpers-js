@@ -156,7 +156,7 @@ var h = (function(){
     });
   }
   function pad(input, width, char, fromRight){
-    var padding = new Array(Math.max(width - input.length + 1)).join(char);
+    var padding = new Array(Math.max(width - input.length + 1)).join(char || " ");
     if(fromRight) return padding + input;
     else return input + padding;
   }
