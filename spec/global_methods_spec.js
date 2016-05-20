@@ -161,6 +161,9 @@ describe("Helpers", function(){
     it("has a default padding character of space", function(){
       expect(h.pad("foo", 5)).toBe("foo  ");
     });
+    it("accepts numbers", function(){
+      expect(h.pad(3, 5)).toBe("3    ");
+    });
   });
 
   describe("#queryStringify", function(){
