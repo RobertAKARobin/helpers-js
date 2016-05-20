@@ -129,8 +129,10 @@ var h = (function(){
     else return (is_a(input, HTMLElement));
   }
   function is_a(input, prototype){
-    if(typeof prototype !== "undefined") return(input instanceof prototype);
-    else return false;
+    var result = false;
+    if(typeof prototype !== "undefined") result = (input instanceof prototype);
+    if(!result) result = (typeof input === (prototype.name || "").toLowerCase())
+    return result;
   }
   function is_html_collection(input){
     if(!publics.is_browser) return false;

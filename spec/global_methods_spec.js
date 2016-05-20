@@ -142,6 +142,13 @@ describe("Helpers", function(){
       expect(h.is_a(new c(), a)).toBe(true);
       expect(h.is_a(new c(), Array)).toBe(true);
     });
+    it("works with primitives", function(){
+      expect(h.is_a(42, Number)).toBe(true);
+      expect(h.is_a("test", String)).toBe(true);
+      expect(h.is_a("test", Number)).toBe(false);
+      expect(h.is_a(true, Boolean)).toBe(true);
+      expect(h.is_a({}, Object)).toBe(true);
+    });
   });
   
   describe("#pad", function(){
