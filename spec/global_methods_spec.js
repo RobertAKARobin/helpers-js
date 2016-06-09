@@ -13,7 +13,7 @@ describe("Helpers", function(){
       expect(h.capitalize(input)).toBe("Alice");
     });
   });
-  
+
   describe("#chain", function(){
     it("runs functions in order", function(done){
       var output = "";
@@ -150,7 +150,7 @@ describe("Helpers", function(){
       expect(h.is_a({}, Object)).toBe(true);
     });
   });
-  
+
   describe("#pad", function(){
     it("adds characters to the end of a string", function(){
       expect(h.pad("foo", 5, "-")).toBe("foo--");
@@ -195,7 +195,7 @@ describe("Helpers", function(){
       expect(output.join(" ")).toBe("Atti cute");
     });
   });
-  
+
   describe("#tag", function(){
     it("returns an HTML tag", function(){
       var output  = h.tag("span", "Test");
@@ -205,8 +205,16 @@ describe("Helpers", function(){
       var output  = ("Test").replace(/^(.*)$/g, h.tag.bind("span"));
       expect(output).toBe("<span>Test</span>");
     });
-    it("can add attributes", function(){
+    it("can add attributes via a string", function(){
       expect(h.tag(["p", "test='yes'"], "test")).toBe("<p test='yes'>test</p>")
+    });
+    it("can add attributes via an object", function(){
+      var el = h.tag(["p", {test: "yes", foo: "bar"}], "test");
+      expect(el).toBe("<p test=\"yes\" foo=\"bar\">test</p>");
+    });
+    it("doesn't give closing tags to inputs", function(){
+      var el = h.tag(["input", {test: "yes"}], "test");
+      expect(el).toBe("<input test=\"yes\" value=\"test\" />");
     });
   });
 
