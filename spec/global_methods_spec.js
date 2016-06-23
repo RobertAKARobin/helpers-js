@@ -213,8 +213,12 @@ describe("Helpers", function(){
       expect(el).toBe("<p test=\"yes\" foo=\"bar\">test</p>");
     });
     it("doesn't give closing tags to inputs", function(){
+      var el = h.tag(["input", {test: "yes", type: "text"}], "test");
+      expect(el).toBe("<input test=\"yes\" type=\"text\" value=\"test\" />");
+    });
+    it("defaults to text input if no input type given", function(){
       var el = h.tag(["input", {test: "yes"}], "test");
-      expect(el).toBe("<input test=\"yes\" value=\"test\" />");
+      expect(el).toBe("<input test=\"yes\" type=\"text\" value=\"test\" />");
     });
   });
 
