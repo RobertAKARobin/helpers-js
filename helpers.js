@@ -28,6 +28,7 @@ var h = (function(){
     select,
     serialize_form,
     tag,
+    templatify,
     try_json
   ];
   for_each(publicMethods, function(method){
@@ -127,6 +128,11 @@ var h = (function(){
   function has_html_children(input){
     if(!publics.is_browser) return false;
     else return (is_a(input, HTMLElement));
+  }
+  function templatify(template, inputVars){
+    return template.replace(/\{\{(.*?)}}/g, function(nil, varName){
+      return inputVars[varName]
+    });
   }
   function is_a(input, prototype){
     var result = false;

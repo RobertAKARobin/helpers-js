@@ -222,6 +222,17 @@ describe("Helpers", function(){
     });
   });
 
+  describe("#templatify", function(){
+    it("replaces variables in double-curlies with input strings", function(){
+      var input = "<div>I like {{fruitA}}, {fruitA}, and {{fruitB}}.</div>";
+      var output = h.templatify(input, {
+        fruitA: "bananas",
+        fruitB: "grapes"
+      });
+      expect(output).toBe("<div>I like bananas, {fruitA}, and grapes.</div>");
+    });
+  });
+
   describe("#try_json", function(){
     it("does not throw an error when passed invalid JSON", function(){
       var input = "This is not JSON";
