@@ -15,6 +15,7 @@ var h = (function(){
     capitalize,
     chain,
     collect,
+    csv,
     el,
     extend,
     for_each,
@@ -81,6 +82,15 @@ var h = (function(){
       });
     }else h.for_each(collection, function(){
       output.push(callback.apply(null, arguments));
+    });
+    return output;
+  }
+  function csv(string){
+    var output = [];
+    var input = string.split(/\n/);
+    for_each(input, function(line){
+      line = line.trim();
+      if(line) output.push(line.trim().split(/ *, */g));
     });
     return output;
   }

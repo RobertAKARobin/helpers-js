@@ -77,6 +77,19 @@ describe("Helpers", function(){
     });
   });
 
+  describe("#csv", function(){
+    it("returns an array of arrays from a CSV string", function(){
+      var input = "\
+Alice, Bob, Carol\n\
+Diane\n\
+\
+ Edward,Frank\
+      ";
+      var output = h.csv(input);
+      expect(output[2].join("-")).toEqual("Edward-Frank");
+    });
+  });
+
   describe("#extend", function(){
     it("applies all properties of one object to another", function(){
       var input = {
